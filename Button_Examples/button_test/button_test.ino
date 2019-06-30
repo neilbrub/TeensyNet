@@ -8,12 +8,12 @@ unsigned long debounceDelay = 100;    // the debounce time; increase if the outp
 void setup() {
   Serial.begin(9600);  //baudrate
 
-  pinMode(0, INPUT_PULLDOWN);  // top button fist set
-  pinMode(4, INPUT_PULLDOWN);  //
-  pinMode(3, INPUT_PULLDOWN);  //
-  pinMode(2, INPUT_PULLDOWN);  // top button second set
-  pinMode(1, INPUT_PULLDOWN);  //
-  pinMode(5, INPUT_PULLDOWN);  // bottom button 
+  pinMode(0, INPUT_PULLDOWN);
+  pinMode(1, INPUT_PULLDOWN);
+  pinMode(2, INPUT_PULLDOWN);
+  pinMode(3, INPUT_PULLDOWN);
+  pinMode(4, INPUT_PULLDOWN);
+  pinMode(5, INPUT_PULLDOWN);
 
   // Interrupts
   //attachInterrupt(digitalPinToInterrupt(5), whatPin, CHANGE);  //DIGITAL Pin 0: Interrupt 0
