@@ -1,3 +1,4 @@
+// New note to play or 'no note change' signal passed, flow state assumed to always be correct
 void controller(int note_to_play) {
   static int channel = 1;
   if (current_volume <= 0) {

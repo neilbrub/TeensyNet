@@ -38,8 +38,6 @@ void setup() {
   current_volume = 0;  // and off.
 }
 
-// New note to play or 'no note change' signal passed, flow state assumed to always be correct
-
 void loop() {
 
   // These occasionally need to persist - remember to reset them at EoL!
