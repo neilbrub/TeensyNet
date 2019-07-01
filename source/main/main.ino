@@ -1,19 +1,21 @@
-unsigned long debounceDelay = 50;  // The debounce time; increase if the output flickers
-unsigned long flowCheckPeriod = 50;  // How long to accumulate flow sensor pulses before mapping to a volume
-int squeak_note = 92;
+/** CONFIG **/
+unsigned long debounceDelay = 50;  // The debounce time; increase if the output flickers.
+unsigned long flowCheckPeriod = 50;  // How long to accumulate flow sensor pulses before mapping to a volume.
+int squeak_note = 92;  // MIDI value to produce a 'squeak' sound.
 
-// Button input state
+/** Button input state **/
 int inputButtonValues[6] = {LOW, LOW, LOW, LOW, LOW, LOW};
 int lastButtonStates[6] = {LOW, LOW, LOW, LOW, LOW, LOW};
 unsigned long lastDebounceTimes[6] = {0, 0, 0, 0, 0, 0};  // the last time each output pin was toggled
 
-// Flow input state
+/** Flow input state **/
 volatile unsigned long pulses;
 unsigned long last_pulseCheck;
 
-// Controller state
+/** Controller state **/
 int note_playing;
 int current_volume;
+
 
 void setup() {
 

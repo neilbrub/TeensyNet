@@ -1,13 +1,13 @@
 int mapInputsToNote() {
   // Setup some shorthands
-  int val0 = inputButtonValues[0];
-  int val1 = inputButtonValues[1];
-  int val2 = inputButtonValues[2];
-  int val3 = inputButtonValues[3];
-  int val4 = inputButtonValues[4];
-  int val5 = inputButtonValues[5];
+  int val0 = inputButtonValues[5];
+  int val1 = inputButtonValues[4];
+  int val2 = inputButtonValues[3];
+  int val3 = inputButtonValues[2];
+  int val4 = inputButtonValues[1];
+  int val5 = inputButtonValues[0];
 
-  // Invalid symbol -1
+  // Invalid symbol -1  
   int note = -1;
 
   // Here we go! Top to bottom for now, in two groups.
