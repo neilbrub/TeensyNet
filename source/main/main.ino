@@ -1,6 +1,4 @@
-unsigned long debounceDelay = 50;  // the debounce time; increase if the output flickers
-
-// **CHANGE ME!!**
+unsigned long debounceDelay = 50;  // The debounce time; increase if the output flickers
 unsigned long flowCheckPeriod = 50;  // How long to accumulate flow sensor pulses before mapping to a volume
 int squeak_note = 92;
 
@@ -69,9 +67,10 @@ void loop() {
 
   /****** AIRFLOW DETECT ******/
   if (millis() - last_pulseCheck >= flowCheckPeriod) {
-    // Map # pulses to a volume (0 -> 127)
 
     /**
+     * Map # pulses to a volume (0 -> 127).
+     * 
      * Experimental results:
      *  blowing normally yielded ~150 pulses over 1 second
      *  blowing hard yielded ~290 over 1 second
@@ -97,10 +96,6 @@ void loop() {
       flowChanged = true;
       current_volume = vol;
     }
-    
-    // debug:
-//     Serial.print("Pulses: ");
-//     Serial.println(pulses);
     
     pulses = 0;
     last_pulseCheck = millis();
