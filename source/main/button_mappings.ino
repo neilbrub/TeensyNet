@@ -28,7 +28,3 @@ int mapInputsToNote() {
 
   return note;
 }
-
-void count_pulse() {
-  pulses++;
-}

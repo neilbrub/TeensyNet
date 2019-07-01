@@ -116,3 +116,7 @@ void loop() {
     flowChanged = false;
   }
 }
+
+void count_pulse() {
+  pulses++;
+}
