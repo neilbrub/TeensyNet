@@ -13,17 +13,17 @@ int mapInputsToNote() {
   // Here we go! Top to bottom for now, in two groups.
   if (!val3 && !val4 && !val5) {
     // Top group only
-    if (!val0 && !val1 && !val2) note = 67;  // G
-    else if (!val0 && val1 && !val2) note = 66;  // F#
-    else if (val0 && !val1 && !val2) note = 64;  // E
-    else if (val0 && val1 && !val2) note = 62;  // D
-    else if (val0 && val1 && val2) note = 60;  // Middle C
-  } else if (val0 && val1 && val2) {
-    // Bottom group (given top all pressed)
-    if (!val3 && val4 && !val5) note = 59;  // B
-    else if (val3 &&!val4 && !val5) note = 58;  // Bb
-    else if (val3 && val4 && !val5) note = 57;  // A
-    else if (val3 && val4 && val5) note = 55;  // G
+    if (!val0 && !val1 && !val2) note = 77;  // F5
+     else if (!val0 && val1 && !val2) note = 76;  // E
+     else if (val0 && !val1 && !val2) note = 74;  // D
+     else if (val0 && val1 && !val2) note = 72;  // C
+     else if (val0 && val1 && val2) note = 70;  // Bb
+   } else if (val0 && val1 && val2) {
+     // Bottom group (given top all pressed)
+     if (!val3 && val4 && !val5) note = 69;  // A4
+     else if (val3 &&!val4 && !val5) note = 68;  // Ab
+     else if (val3 && val4 && !val5) note = 67;  // G
+     else if (val3 && val4 && val5) note = 65;  // F4
   }
 
   return note;
