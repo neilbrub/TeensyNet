@@ -34,7 +34,7 @@ void setup() {
   pulses = 0;
   last_pulseCheck = 0;
 
-  note_playing = 67;  // start open...
+  note_playing = 77;  // start open...
   current_volume = 0;  // and off.
 }
 
