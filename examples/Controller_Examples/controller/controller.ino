@@ -42,7 +42,12 @@ void controller(int note_to_play) {
   static int channel = 1;
   if (vol <= 0) {
     usbMIDI.sendNoteOff(note_playing, vol, channel);
-    note_playing = note_to_play;
+    if (note_to_play > 0){
+      note_playing = note_to_play; 
+    }
+    else if (note_to_play == -1) {
+      note_playing = squeak_note;
+    }
   }
   else{
     if (note_to_play == -1){
