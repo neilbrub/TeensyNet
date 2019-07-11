@@ -3,6 +3,8 @@ unsigned long debounceDelay = 50;  // The debounce time; increase if the output 
 unsigned long flowCheckPeriod = 50;  // How long to accumulate flow sensor pulses before mapping to a volume.
 int squeak_note = 92;  // MIDI value to produce a 'squeak' sound.
 
+bool AUTOPLAY = false;
+
 /** Button input state **/
 int inputButtonValues[6] = {LOW, LOW, LOW, LOW, LOW, LOW};
 int lastButtonStates[6] = {LOW, LOW, LOW, LOW, LOW, LOW};
@@ -34,7 +36,7 @@ void setup() {
   pulses = 0;
   last_pulseCheck = 0;
 
-  note_playing = 77;  // start open...
+  note_playing = 65;  // start open...
   current_volume = 0;  // and off.
 }
 
@@ -68,7 +70,7 @@ void loop() {
   }
 
   /****** AIRFLOW DETECT ******/
-  if (millis() - last_pulseCheck >= flowCheckPeriod) {
+  if (!AUTOPLAY && millis() - last_pulseCheck >= flowCheckPeriod) {
 
     /**
      * Map # pulses to a volume (0 -> 127).
