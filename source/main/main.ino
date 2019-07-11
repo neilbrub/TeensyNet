@@ -3,7 +3,7 @@ unsigned long debounceDelay = 50;  // The debounce time; increase if the output 
 unsigned long flowCheckPeriod = 50;  // How long to accumulate flow sensor pulses before mapping to a volume.
 int squeak_note = 92;  // MIDI value to produce a 'squeak' sound.
 
-bool AUTOPLAY = true;
+bool AUTOPLAY = false;
 
 /** Button input state **/
 int inputButtonValues[6] = {LOW, LOW, LOW, LOW, LOW, LOW};
