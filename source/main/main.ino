@@ -1,9 +1,10 @@
 /** CONFIG **/
 unsigned long debounceDelay = 50;  // The debounce time; increase if the output flickers.
 unsigned long flowCheckPeriod = 50;  // How long to accumulate flow sensor pulses before mapping to a volume.
-int squeak_note = 92;  // MIDI value to produce a 'squeak' sound.
+int squeak_note = 86;  // MIDI value to produce a 'squeak' sound.
 
 bool AUTOPLAY = false;
+double pressure = 0;
 
 /** Button input state **/
 int inputButtonValues[6] = {LOW, LOW, LOW, LOW, LOW, LOW};
@@ -31,13 +32,19 @@ void setup() {
   pinMode(4, INPUT_PULLDOWN);
   pinMode(5, INPUT_PULLDOWN);
 
-  attachInterrupt(6, count_pulse, RISING);
+  //attachInterrupt(6, count_pulse, RISING);
 
   pulses = 0;
   last_pulseCheck = 0;
 
   note_playing = 65;  // start open...
   current_volume = 0;  // and off.
+  
+  //Pressure testing
+  pressure = 0;
+  pinMode(A1, INPUT);
+  analogReadResolution(13);
+  
 }
 
 void loop() {
@@ -81,16 +88,17 @@ void loop() {
      * 
      */
 
-    unsigned int off_cap = (20 * flowCheckPeriod / 1000);
-    unsigned int low_cap= (120 * flowCheckPeriod / 1000);
-    unsigned int med_cap = (240 * flowCheckPeriod / 1000);
+    double off_cap = 500.0;  //(20 * flowCheckPeriod / 1000);
+    double low_cap = 700.0;  //(120 * flowCheckPeriod / 1000);
+    double med_cap = 900.0;  //(240 * flowCheckPeriod / 1000);
+    pressure = analogRead(A1);
     
     int vol;
-    if (pulses <= off_cap) {
+    if (pressure <= off_cap) {
       vol = 0;
-    } else if (pulses < low_cap) {
+    } else if (pressure < low_cap) {
       vol = 50;
-    } else if (pulses < med_cap) {
+    } else if (pressure < med_cap) {
       vol = 75;
     } else {
       vol = 105;
@@ -114,8 +122,4 @@ void loop() {
     controller(0);
     flowChanged = false;
   }
-}
-
-void count_pulse() {
-  pulses++;
 }
