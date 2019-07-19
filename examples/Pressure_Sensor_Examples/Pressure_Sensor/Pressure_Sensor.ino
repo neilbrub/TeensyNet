@@ -10,8 +10,10 @@ void setup() {
 }
 void loop() {
   pressure = analogRead(A1);
-  Serial.print("pressure reading:");
-  Serial.println(pressure);
-  Serial.println("   ");
-  delay(500);
+  if (pressure > 800) {
+    Serial.print("pressure reading:");
+    Serial.println(pressure);
+    Serial.println("   ");
+    delay(100);
+  }
 }

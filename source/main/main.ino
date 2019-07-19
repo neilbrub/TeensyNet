@@ -1,6 +1,6 @@
 /** CONFIG **/
 unsigned long debounceDelay = 50;  // The debounce time; increase if the output flickers.
-unsigned long flowCheckPeriod = 50;  // How long to accumulate flow sensor pulses before mapping to a volume.
+unsigned long pressureCheckPeriod = 10;  // How long to poll pressure sensor for current reading
 int squeak_note = 86;  // MIDI value to produce a 'squeak' sound.
 
 bool AUTOPLAY = false;
@@ -12,8 +12,8 @@ int lastButtonStates[6] = {LOW, LOW, LOW, LOW, LOW, LOW};
 unsigned long lastDebounceTimes[6] = {0, 0, 0, 0, 0, 0};  // the last time each output pin was toggled
 
 /** Flow input state **/
-volatile unsigned long pulses;
-unsigned long last_pulseCheck;
+//volatile unsigned long pulses;
+unsigned long last_pressure_check;
 
 /** Controller state **/
 int note_playing;
@@ -32,16 +32,12 @@ void setup() {
   pinMode(4, INPUT_PULLDOWN);
   pinMode(5, INPUT_PULLDOWN);
 
-  //attachInterrupt(6, count_pulse, RISING);
-
-  pulses = 0;
-  last_pulseCheck = 0;
-
   note_playing = 65;  // start open...
   current_volume = 0;  // and off.
   
   //Pressure testing
   pressure = 0;
+  last_pressure_check = 0;
   pinMode(A1, INPUT);
   analogReadResolution(13);
   
@@ -77,29 +73,20 @@ void loop() {
   }
 
   /****** AIRFLOW DETECT ******/
-  if (!AUTOPLAY && millis() - last_pulseCheck >= flowCheckPeriod) {
+  if (!AUTOPLAY && millis() - last_pressure_check >= pressureCheckPeriod) {
 
-    /**
-     * Map # pulses to a volume (0 -> 127).
-     * 
-     * Experimental results:
-     *  blowing normally yielded ~150 pulses over 1 second
-     *  blowing hard yielded ~290 over 1 second
-     * 
-     */
-
-    double off_cap = 500.0;  //(20 * flowCheckPeriod / 1000);
-    double low_cap = 700.0;  //(120 * flowCheckPeriod / 1000);
-    double med_cap = 900.0;  //(240 * flowCheckPeriod / 1000);
+    double off_cap = 650.0;
+    double low_cap = 1000.0;
+    double med_cap = 1500.0;
     pressure = analogRead(A1);
     
     int vol;
     if (pressure <= off_cap) {
       vol = 0;
     } else if (pressure < low_cap) {
-      vol = 50;
+      vol = 60;
     } else if (pressure < med_cap) {
-      vol = 75;
+      vol = 85;
     } else {
       vol = 105;
     }
@@ -109,8 +96,7 @@ void loop() {
       current_volume = vol;
     }
     
-    pulses = 0;
-    last_pulseCheck = millis();
+    last_pressure_check = millis();
   }
 
   if (buttonsChanged) {
