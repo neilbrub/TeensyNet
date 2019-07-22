@@ -19,7 +19,7 @@ unsigned long last_pressure_check;
 int note_playing;
 int current_volume;
 
-int ports [6] = {2, 9, 0, 3, 4, 5};
+int ports [6] = {2, 9, 0, 3, 4, 7};
 
 
 void setup() {

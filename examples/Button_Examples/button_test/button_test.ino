@@ -3,17 +3,18 @@ int inputButtonValue [6] = {LOW, LOW, LOW, LOW, LOW, LOW};
 int lastButtonState [6] = {LOW, LOW, LOW, LOW, LOW, LOW};
 unsigned long lastDebounceTime [6] = {0, 0, 0, 0, 0, 0};  // the last time the output pin was toggled
 unsigned long debounceDelay = 100;    // the debounce time; increase if the output flickers
+int ports [6] = {2, 9, 0, 3, 4, 7};
 
 
 void setup() {
   Serial.begin(9600);  //baudrate
 
   pinMode(0, INPUT_PULLDOWN);
-  pinMode(1, INPUT_PULLDOWN);
   pinMode(2, INPUT_PULLDOWN);
   pinMode(3, INPUT_PULLDOWN);
   pinMode(4, INPUT_PULLDOWN);
-  pinMode(5, INPUT_PULLDOWN);
+  pinMode(7, INPUT_PULLDOWN);
+  pinMode(9, INPUT_PULLDOWN);
 
   // Interrupts
   //attachInterrupt(digitalPinToInterrupt(5), whatPin, CHANGE);  //DIGITAL Pin 0: Interrupt 0
@@ -31,7 +32,7 @@ void loop (){
 
   changed = false;
   for (int i = 0; i <= 5; i++) {
-    int reading = digitalRead(i);
+    int reading = digitalRead(ports[i]);
     
     if (reading != lastButtonState[i]) {
       //reset the debouncing timer
