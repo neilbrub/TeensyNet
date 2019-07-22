@@ -86,11 +86,11 @@ void loop() {
     if (pressure <= off_cap) {
       vol = 0;
     } else if (pressure < low_cap) {
-      vol = 60;
+      vol =127;
     } else if (pressure < med_cap) {
-      vol = 85;
+      vol = 127;
     } else {
-      vol = 105;
+      vol = 127;
     }
 
     if (vol != current_volume) {
