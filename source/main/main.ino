@@ -19,6 +19,8 @@ unsigned long last_pressure_check;
 int note_playing;
 int current_volume;
 
+int ports [6] = {2, 9, 0, 3, 4, 5};
+
 
 void setup() {
 
@@ -26,11 +28,11 @@ void setup() {
 
   // Set pins, indexed top-to-bottom
   pinMode(0, INPUT_PULLDOWN);
-  pinMode(1, INPUT_PULLDOWN);
   pinMode(2, INPUT_PULLDOWN);
   pinMode(3, INPUT_PULLDOWN);
   pinMode(4, INPUT_PULLDOWN);
-  pinMode(5, INPUT_PULLDOWN);
+  pinMode(7, INPUT_PULLDOWN);
+  pinMode(9, INPUT_PULLDOWN);
 
   note_playing = 65;  // start open...
   current_volume = 0;  // and off.
@@ -51,7 +53,7 @@ void loop() {
 
   /****** BUTTON DETECT ******/
   for (int i = 0; i < 6; i++) {
-    int reading = digitalRead(i);
+    int reading = digitalRead(ports[i]);
     
     if (reading != lastButtonStates[i]) {
       //reset the debouncing timer
