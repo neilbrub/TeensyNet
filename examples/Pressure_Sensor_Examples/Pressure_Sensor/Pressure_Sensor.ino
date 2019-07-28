@@ -13,5 +13,5 @@ void loop() {
   Serial.print("pressure reading:");
   Serial.println(pressure);
   Serial.println("   ");
-  delay(500);
+  delay(100);
 }

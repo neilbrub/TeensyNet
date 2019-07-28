@@ -1,9 +1,10 @@
 /** CONFIG **/
 unsigned long debounceDelay = 50;  // The debounce time; increase if the output flickers.
-unsigned long flowCheckPeriod = 50;  // How long to accumulate flow sensor pulses before mapping to a volume.
-int squeak_note = 92;  // MIDI value to produce a 'squeak' sound.
+unsigned long pressureCheckPeriod = 10;  // How long to poll pressure sensor for current reading
+int squeak_note = 86;  // MIDI value to produce a 'squeak' sound.
 
 bool AUTOPLAY = false;
+double pressure = 0;
 
 /** Button input state **/
 int inputButtonValues[6] = {LOW, LOW, LOW, LOW, LOW, LOW};
@@ -11,12 +12,14 @@ int lastButtonStates[6] = {LOW, LOW, LOW, LOW, LOW, LOW};
 unsigned long lastDebounceTimes[6] = {0, 0, 0, 0, 0, 0};  // the last time each output pin was toggled
 
 /** Flow input state **/
-volatile unsigned long pulses;
-unsigned long last_pulseCheck;
+//volatile unsigned long pulses;
+unsigned long last_pressure_check;
 
 /** Controller state **/
 int note_playing;
 int current_volume;
+
+int ports [6] = {2, 9, 0, 3, 4, 7};
 
 
 void setup() {
@@ -25,19 +28,21 @@ void setup() {
 
   // Set pins, indexed top-to-bottom
   pinMode(0, INPUT_PULLDOWN);
-  pinMode(1, INPUT_PULLDOWN);
   pinMode(2, INPUT_PULLDOWN);
   pinMode(3, INPUT_PULLDOWN);
   pinMode(4, INPUT_PULLDOWN);
-  pinMode(5, INPUT_PULLDOWN);
-
-  attachInterrupt(6, count_pulse, RISING);
-
-  pulses = 0;
-  last_pulseCheck = 0;
+  pinMode(7, INPUT_PULLDOWN);
+  pinMode(9, INPUT_PULLDOWN);
 
   note_playing = 65;  // start open...
   current_volume = 0;  // and off.
+  
+  //Pressure testing
+  pressure = 0;
+  last_pressure_check = 0;
+  pinMode(A1, INPUT);
+  analogReadResolution(13);
+  
 }
 
 void loop() {
@@ -48,7 +53,7 @@ void loop() {
 
   /****** BUTTON DETECT ******/
   for (int i = 0; i < 6; i++) {
-    int reading = digitalRead(i);
+    int reading = digitalRead(ports[i]);
     
     if (reading != lastButtonStates[i]) {
       //reset the debouncing timer
@@ -70,30 +75,22 @@ void loop() {
   }
 
   /****** AIRFLOW DETECT ******/
-  if (!AUTOPLAY && millis() - last_pulseCheck >= flowCheckPeriod) {
+  if (!AUTOPLAY && millis() - last_pressure_check >= pressureCheckPeriod) {
 
-    /**
-     * Map # pulses to a volume (0 -> 127).
-     * 
-     * Experimental results:
-     *  blowing normally yielded ~150 pulses over 1 second
-     *  blowing hard yielded ~290 over 1 second
-     * 
-     */
-
-    unsigned int off_cap = (20 * flowCheckPeriod / 1000);
-    unsigned int low_cap= (120 * flowCheckPeriod / 1000);
-    unsigned int med_cap = (240 * flowCheckPeriod / 1000);
+    double off_cap = 650.0;
+    double low_cap = 1000.0;
+    double med_cap = 1500.0;
+    pressure = analogRead(A1);
     
     int vol;
-    if (pulses <= off_cap) {
+    if (pressure <= off_cap) {
       vol = 0;
-    } else if (pulses < low_cap) {
-      vol = 50;
-    } else if (pulses < med_cap) {
-      vol = 75;
+    } else if (pressure < low_cap) {
+      vol =127;
+    } else if (pressure < med_cap) {
+      vol = 127;
     } else {
-      vol = 105;
+      vol = 127;
     }
 
     if (vol != current_volume) {
@@ -101,8 +98,7 @@ void loop() {
       current_volume = vol;
     }
     
-    pulses = 0;
-    last_pulseCheck = millis();
+    last_pressure_check = millis();
   }
 
   if (buttonsChanged) {
@@ -114,8 +110,4 @@ void loop() {
     controller(0);
     flowChanged = false;
   }
-}
-
-void count_pulse() {
-  pulses++;
 }
