@@ -1,5 +1,11 @@
 ## TeensyNet
 
-Current Prototype:
+Final Design:
 
-![prototype 2](./res/proto_2.jpg)
+<img src="./res/proto_3.jpg" alt="final design" width="500"/>
+
+<br />
+
+Early Prototype:
+
+<img src="./res/proto_2.jpg" alt="prototype 2" width="250"/>
