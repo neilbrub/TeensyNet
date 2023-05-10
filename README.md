@@ -1,6 +1,6 @@
 ## TeensyNet
 
-High-Fidelity Prototype:
+Medium-Fidelity Prototype:
 
 <img src="./gallery/final.jpg" alt="final design" width="500"/>
 
